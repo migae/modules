@@ -1,6 +1,6 @@
 = migae modules
 
-A Clojure interface to the GAE link:https://cloud.google.com/appengine/docs/java/javadoc/com/google/appengine/api/modules/package-summary[modules] API.
+A Clojure interface to the GAE link:https://cloud.google.com/appengine/docs/java/javadoc/com/google/appengine/api/modules/package-summary[Modules API].
 
 See also link:https://cloud.google.com/appengine/docs/java/modules/[App Engine Modules in Java].
 
