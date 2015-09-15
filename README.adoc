@@ -6,6 +6,47 @@ See also link:https://cloud.google.com/appengine/docs/java/modules/[App Engine M
 
 For an example, see the `modules` sample app in link:https://github.com/migae/migae[migae].
 
+= api
+
+[NOTE]
+not yet implemented.  trying to get configuration right first.
+
+= configuration
+
+See link:https://cloud.google.com/appengine/docs/java/modules/#Java_Configuration[Configuration].
+
+== naming names
+
+By default Gradle uses the (basename of the) root directory of a
+project/subproject as the name of the project/subproject; the
+appengine Gradle plugin uses the Gradlel project/subproject name as
+the module name.
+
+This can be altered using the `settings.gradle` file in the project
+root.  For example, suppose your project is in directory `foo`, and
+your module code is in `foo/datastore`.  You decide that you really
+want to name the module `ds` instead of `datastore`, but you want to
+retain `foo/datastore` as the module's subproject root.  Do this in
+`foo/settings.gradle`:
+
+[source,gradle]
+----
+include ':datastore'
+project(":datastore").name = "ds"
+----
+
+If you do this, you will also have to adjust:
+
+* `foo/datastore/src/main/webapp/WEB-INF/appengine-web.xml` - make the <module> element match
+* `foo/ear/src/main/application/MEAT-INF/application.xml` - make the <web-uri> element match
+* `foo/ear/src/main/application/MEAT-INF/maven-application.xml` - make the <web-uri> element match
+
+To correctly monitor and reload changed source files (using for
+example fswatch) you will also need to adjust your configuration.  In
+the example code at
+link:https://github.com/migae/migae/blob/master/modules/fswatch.sh[migae/modules/fswatch.sh]
+you would edit the MODULE variable.
+
 == checklist
 
 Module versions specified in:
@@ -16,6 +57,14 @@ Module versions specified in:
 ** <module> must match value specified in ear's application.xml?
 * ear module's src/main/application/META-INF/application.xml, as <web-uri> (also maven-application.xml)
 * fswatch.sh
+* reloader.clj
+
+Getting the last two right is critical if you want to have quasi-repl
+superpowers.  fswatch.clj will monitor source directories and copy
+changed files to the runtime resource tree; reloader.clj will monitor
+the runtime resource tree and reload changed files.
+
+
 
 == notes
 
